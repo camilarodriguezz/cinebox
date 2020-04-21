@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 23483,
+  "packagerPid": 26489,
   "expoServerNgrokUrl": "https://iq-wju.anonymous.cinebox-client.exp.direct",
   "packagerNgrokUrl": "https://packager.iq-wju.anonymous.cinebox-client.exp.direct",
-  "ngrokPid": 23493,
+  "ngrokPid": 26499,
   "webpackServerPort": null
 }

@@ -9,7 +9,7 @@ import { createStackNavigator } from 'react-navigation-stack'
 import 'react-native-gesture-handler';
 
 const AppNavigator = createStackNavigator({
-  Auth: { screen: Auth },
+  Auth: { screen: Auth, },
   MovieList: { screen: MovieList },
   Detail: { screen: Detail },
   Edit: { screen: Edit },
