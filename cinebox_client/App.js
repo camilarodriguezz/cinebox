@@ -1,8 +1,8 @@
 import React from 'react';
-import MovieList from './components/list';
-import Detail from './components/detail';
-import Edit from './components/edit';
-import Auth from './components/auth';
+import MovieList from './components/MovieList';
+import Detail from './components/Detail';
+import Edit from './components/Edit';
+import Auth from './components/Auth';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack'

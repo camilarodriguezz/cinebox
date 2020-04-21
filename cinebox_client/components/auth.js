@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, Image, Button, TextInput, AsyncStorage, TouchableOpacity } from 'react-native';
-
+import { StyleSheet, Text, View, Button, TextInput, AsyncStorage, TouchableOpacity } from 'react-native';
+import variables from './variables';
 
 export default function Auth(props) {
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [regView, setRegView] = useState(false);
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const [regView, setRegView] = useState(false)
 
     useEffect(() => {
-        getData();
+        getData()
     }, [])
 
-    const auth = () => {
+    const auth =  () => {
         if (regView) {
-            fetch(`http://10.0.0.197:8000/api/users/`, {
+            fetch(`${variables.ip_address}/api/users/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -22,12 +22,20 @@ export default function Auth(props) {
                 body: JSON.stringify({ username, password })
             })
                 .then(res => res.json())
-                .then(res => {
-                    setRegView(false);
+                .then((res) => {
+                    AsyncStorage.setItem('Boxd_Token', res.token)
+                    .then(response => {
+                        setRegView(false);
+                        props.navigation.navigate("MovieList")
+                    })
+                    .catch(error => {
+                        // spinner and a retry for login until they log in or timeout
+                        // error message
+                    })
                 })
-                .catch(error => console.log(error));
+                .catch(err => console.log(err))
         } else {
-            fetch(`http://10.0.0.197:8000/auth/`, {
+            fetch(`${variables.ip_address}/auth/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -35,79 +43,76 @@ export default function Auth(props) {
                 body: JSON.stringify({ username, password })
             })
                 .then(res => res.json())
-                .then(res => {
-                    saveData(res.token);
-                    props.navigation.navigate('MovieList')
+                .then((res) => {
+                    AsyncStorage.setItem('Boxd_Token', res.token)
+                    .then(response => props.navigation.navigate("MovieList"))
+                    .catch(error => {
+                        // spinner and a retry for login until they log in or timeout
+                        // error message
+                    })
                 })
                 .catch(error => console.log(error));
         }
     }
-
-    const saveData = async (token) => {
-        await AsyncStorage.setItem('MR_Token', token)
+    // const saveData = async (token) => {
+    //     await AsyncStorage.setItem('Boxd_Token', token)
+    // }
+    const getData = () => {
+        AsyncStorage.getItem('Boxd_Token')
+        .then(response => props.navigation.navigate('MovieList'))
+        .catch(error => {
+           props.navigattion.navigate
+        });
     }
-    const getData = async () => {
-        const token = await AsyncStorage.getItem('MR_Token')
-        if (token) props.navigation.navigate('MovieList')
-    }
+    
     const toggleView = () => {
         setRegView(!regView);
     }
 
     return (
         <View style={styles.container}>
-            <Text style={styles.label}>Username:</Text>
+            <Text style={styles.label}>Username</Text>
             <TextInput
-                style={styles.input}
-                placeholder="Username"
-                onChangeText={text => setUsername(text)}
-                value={username}
-                autoCapitalize={"none"}
+                style={styles.input} placeholder="Username"
+                onChangeText={text => setUsername(text)} value={username}
+                autoCapitalize={'none'}
             />
-            <Text style={styles.label}>Password:</Text>
+            <Text style={styles.label}>Password</Text>
             <TextInput
-                style={styles.input}
-                placeholder="Password"
-                onChangeText={text => setPassword(text)}
-                value={password}
+                style={styles.input} placeholder="Description"
+                onChangeText={text => setPassword(text)} value={password}
+                autoCapitalize={'none'}
                 secureTextEntry={true}
-                autoCapitalize={"none"}
             />
-            <Button
-                onPress={() => auth()}
-                title={regView ? "Register" : "Login"}
-            />
+            <Button onPress={() => auth()} title={regView ? 'Register' : 'Login'} />
             <TouchableOpacity onPress={() => toggleView()}>
-                {regView ?
-                    <Text style={styles.viewText}>Already have an account? Login here.</Text>
-                    :
-                    <Text style={styles.viewText}>Don't have an account? Register here.</Text>
-                }
+                {regView ? <Text style={styles.viewText}>Already have an Acccoun? Go to Login!</Text> : 
+                <Text style={styles.viewText}>Don't have an account? Register Here!</Text>}
             </TouchableOpacity>
         </View>
     );
 }
 
-Auth.navigationOptions = screenProps => ({
-    title: "Login",
+Auth.navigationOptions = () => ({
+    title: "Login/Registration",
     headerStyle: {
         backgroundColor: 'orange'
     },
-    headerTintColor: '#fff',
+    headerTintColor: 'white',
     headerTitleStyle: {
         fontWeight: 'bold',
         fontSize: 24,
-    }
+    },
 })
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#282C35',
-        padding: 10,
+        padding: 10
     },
     label: {
-        fontSize: 24,
+        fontSize: 20,
         color: 'white',
         padding: 10,
     },
@@ -123,5 +128,5 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         paddingLeft: 10,
         paddingRight: 10,
-    },
+    }
 });

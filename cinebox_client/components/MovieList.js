@@ -1,27 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, Button, AsyncStorage } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import variables from './variables'
 
 export default function MovieList(props) {
 
     const [movies, setMovies] = useState([])
-    let token = null;
-
-    const getData = async () => {
-        token = await AsyncStorage.getItem('MR_Token');
-        if (token) {
-            getMovies();
-        } else {
-            props.navigation.navigate("Auth")
-        }
-    };
-
-    useEffect(() => {
-        getData();
-    }, []);
-
-    const getMovies = () => {
-        fetch(`http://10.0.0.197:8000/api/movies/`, {
+    
+    const getMovies = (token) => {
+        console.log("got here")
+        fetch(`${variables.ip_address}/api/movies/`, {
             method: 'GET',
             headers: {
                 'Authorization': `Token ${token}`
@@ -29,27 +17,37 @@ export default function MovieList(props) {
         })
             .then(res => res.json())
             .then(jsonRes => setMovies(jsonRes))
-            .catch(error => console.log(error))
+            .catch(err => console.log(err))
     }
 
+    const getData = () => {
+        AsyncStorage.getItem('Boxd_Token')
+        .then(response => getMovies(response))
+        .catch(error => props.navigation.navigate('Auth'));
+    }
+
+    useEffect(() => {
+        getData();
+    }, []);
+
+    
+
     const movieClicked = (movie) => {
-        props.navigation.navigate("Detail", { movie: movie, title: movie.title, token: token })
+        props.navigation.navigate('Detail', { movie: movie, title: movie.title})
     }
 
     return (
         <View>
-            <Image
-                style={styles.logoTop}
-                source={require('../assets/MR_logo.png')}
-            />
+            <Image style={styles.image} source={require('../assets/MR_logo.png')} />
             <FlatList
                 data={movies}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => movieClicked(item)} >
+                    <TouchableOpacity onPress={() => movieClicked(item)}>
                         <View style={styles.item}>
                             <Text style={styles.itemText}>{item.title}</Text>
                         </View>
                     </TouchableOpacity>
+
                 )}
                 keyExtractor={(item, index) => index.toString()}
             />
@@ -58,21 +56,18 @@ export default function MovieList(props) {
 }
 
 MovieList.navigationOptions = screenProps => ({
-    title: "List of movies",
+    title: "List of Movies",
     headerStyle: {
         backgroundColor: 'orange'
     },
-    headerTintColor: '#fff',
+    headerTintColor: 'white',
     headerTitleStyle: {
         fontWeight: 'bold',
         fontSize: 24,
     },
     headerRight: () =>
-        <Button
-            title='Add New'
-            color='white'
-            onPress={() => screenProps.navigation.navigate('Edit', { movie: { title: '', description: '' } })}
-        />
+        <Button title='Add New' color='white'
+            onPress={() => screenProps.navigation.navigate('Edit', { movie: { title: '', description: '' } })} />
 })
 
 const styles = StyleSheet.create({
@@ -86,15 +81,16 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         height: 50,
-        backgroundColor: '#282c35'
+        backgroundColor: 'gray',
     },
     itemText: {
-        color: '#fff',
+        color: 'white',
         fontSize: 24,
     },
-    logoTop: {
+    image: {
         width: '100%',
-        height: 135,
-        paddingTop: 30,
+        height: 125,
+        // paddingTop: 30,
+        // resizeMode: 'contain',
     }
 });
