@@ -7,13 +7,12 @@ import variables from './variables'
 export default function Detail(props) {
 
     const movie = props.navigation.getParam('movie', null);
-    // const token = props.navigation.getParam('token', '');
+    const [token, setToken] = useState(null)
     const [highlight, setHighlight] = useState(0);
     //useeffect -> get token -> get request -> setState
 
-    const rateClicked = (token) => {
-        console.log("the detail token kkkk ", token);
-
+    const rateClicked = () => {
+        
         if (highlight > 0 && highlight < 6) {
             fetch(`${variables.ip_address}/api/movies/${movie.id}/rate_movie/`, {
                 method: 'POST',
@@ -34,7 +33,7 @@ export default function Detail(props) {
 
     const getToken = () => {
         AsyncStorage.getItem('Boxd_Token')
-            .then(response => rateClicked(response))
+            .then(response => setToken(response))
             .catch(error => console.log(error));
     }
 

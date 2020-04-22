@@ -9,7 +9,7 @@ export default function MovieList(props) {
     const [movies, setMovies] = useState([])
     
     const getMovies = (token) => {
-        console.log("got here blah blah")
+        console.log("got here getMovies")
         
         fetch(`${variables.ip_address}/api/movies/`, {
             method: 'GET',
@@ -33,6 +33,8 @@ export default function MovieList(props) {
     }, []);
 
     const movieClicked = (movie) => {
+        console.log('the movie', props);
+        
         props.navigation.navigate('Detail', { movie: movie, title: movie.title})
     }
 
@@ -74,8 +76,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'black',
-        // alignItems: 'center',
-        // justifyContent: 'center',
     },
     item: {
         flex: 1,
@@ -90,7 +90,5 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: 125,
-        // paddingTop: 30,
-        // resizeMode: 'contain',
     }
 });
