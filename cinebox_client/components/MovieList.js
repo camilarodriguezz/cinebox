@@ -9,7 +9,7 @@ export default function MovieList(props) {
     const [movies, setMovies] = useState([])
     
     const getMovies = (token) => {
-        console.log("got here")
+        console.log("got here blah blah")
         
         fetch(`${variables.ip_address}/api/movies/`, {
             method: 'GET',
