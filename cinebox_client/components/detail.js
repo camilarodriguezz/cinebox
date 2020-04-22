@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Alert, AsyncStorage} from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, AsyncStorage } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import variables from './variables'
@@ -10,7 +10,10 @@ export default function Detail(props) {
     // const token = props.navigation.getParam('token', '');
     const [highlight, setHighlight] = useState(0);
     //useeffect -> get token -> get request -> setState
-    const rateClicked = () => {
+
+    const rateClicked = (token) => {
+        console.log("the detail token kkkk ", token);
+
         if (highlight > 0 && highlight < 6) {
             fetch(`${variables.ip_address}/api/movies/${movie.id}/rate_movie/`, {
                 method: 'POST',
@@ -29,29 +32,39 @@ export default function Detail(props) {
         }
     }
 
-return (
-    <View style={styles.container}>
-        <View style={styles.starContainer}>
-            <FontAwesomeIcon style={movie.avg_rating > 0 ? styles.orange : styles.white} icon={faStar} />
-            <FontAwesomeIcon style={movie.avg_rating > 1 ? styles.orange : styles.white} icon={faStar} />
-            <FontAwesomeIcon style={movie.avg_rating > 2 ? styles.orange : styles.white} icon={faStar} />
-            <FontAwesomeIcon style={movie.avg_rating > 3 ? styles.orange : styles.white} icon={faStar} />
-            <FontAwesomeIcon style={movie.avg_rating > 4 ? styles.orange : styles.white} icon={faStar} />
-            <Text style={styles.white}>({movie.no_of_ratings})</Text>
+    const getToken = () => {
+        AsyncStorage.getItem('Boxd_Token')
+            .then(response => rateClicked(response))
+            .catch(error => console.log(error));
+    }
+
+    useEffect(() => {
+        getToken();
+    }, []);
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.starContainer}>
+                <FontAwesomeIcon style={movie.avg_rating > 0 ? styles.orange : styles.white} icon={faStar} />
+                <FontAwesomeIcon style={movie.avg_rating > 1 ? styles.orange : styles.white} icon={faStar} />
+                <FontAwesomeIcon style={movie.avg_rating > 2 ? styles.orange : styles.white} icon={faStar} />
+                <FontAwesomeIcon style={movie.avg_rating > 3 ? styles.orange : styles.white} icon={faStar} />
+                <FontAwesomeIcon style={movie.avg_rating > 4 ? styles.orange : styles.white} icon={faStar} />
+                <Text style={styles.white}>({movie.num_of_ratings})</Text>
+            </View>
+            <Text style={styles.description}>{movie.description}</Text>
+            <View style={styles.stars} />
+            <Text style={styles.description}>Rate the Movie!!!</Text>
+            <View style={styles.starContainer}>
+                <FontAwesomeIcon style={highlight > 0 ? styles.purple : styles.gray} icon={faStar} size={48} onPress={() => setHighlight(1)} />
+                <FontAwesomeIcon style={highlight > 1 ? styles.purple : styles.gray} icon={faStar} size={48} onPress={() => setHighlight(2)} />
+                <FontAwesomeIcon style={highlight > 2 ? styles.purple : styles.gray} icon={faStar} size={48} onPress={() => setHighlight(3)} />
+                <FontAwesomeIcon style={highlight > 3 ? styles.purple : styles.gray} icon={faStar} size={48} onPress={() => setHighlight(4)} />
+                <FontAwesomeIcon style={highlight > 4 ? styles.purple : styles.gray} icon={faStar} size={48} onPress={() => setHighlight(5)} />
+                <Button title="Rate Movie!" onPress={() => rateClicked()} />
+            </View>
         </View>
-        <Text style={styles.description}>{movie.description}</Text>
-        <View style={styles.stars} />
-        <Text style={styles.description}>Rate the Movie!!!</Text>
-        <View style={styles.starContainer}>
-            <FontAwesomeIcon style={highlight > 0 ? styles.purple : styles.gray} icon={faStar} size={48} onPress={() => setHighlight(1)} />
-            <FontAwesomeIcon style={highlight > 1 ? styles.purple : styles.gray} icon={faStar} size={48} onPress={() => setHighlight(2)} />
-            <FontAwesomeIcon style={highlight > 2 ? styles.purple : styles.gray} icon={faStar} size={48} onPress={() => setHighlight(3)} />
-            <FontAwesomeIcon style={highlight > 3 ? styles.purple : styles.gray} icon={faStar} size={48} onPress={() => setHighlight(4)} />
-            <FontAwesomeIcon style={highlight > 4 ? styles.purple : styles.gray} icon={faStar} size={48} onPress={() => setHighlight(5)} />
-            <Button title="Rate Movie!" onPress={() => rateClicked()} />
-        </View>
-    </View>
-);
+    );
 }
 
 Detail.navigationOptions = screenProps => ({

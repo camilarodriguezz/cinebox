@@ -5,10 +5,12 @@ import variables from './variables'
 
 export default function MovieList(props) {
 
+
     const [movies, setMovies] = useState([])
     
     const getMovies = (token) => {
         console.log("got here")
+        
         fetch(`${variables.ip_address}/api/movies/`, {
             method: 'GET',
             headers: {
@@ -29,8 +31,6 @@ export default function MovieList(props) {
     useEffect(() => {
         getData();
     }, []);
-
-    
 
     const movieClicked = (movie) => {
         props.navigation.navigate('Detail', { movie: movie, title: movie.title})

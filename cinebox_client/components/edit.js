@@ -8,18 +8,6 @@ export default function Edit(props) {
     const [title, setTitle] = useState(movie.title)
     const [description, setDescription] = useState(movie.description)
 
-    const getData = () => {
-        AsyncStorage.getItem('Boxd_Token')
-        .then(response => {
-            
-        })
-        .catch(error => props.navigation.navigate('Auth'));
-    }
-
-    useEffect(() => {
-        getData();
-    }, []);
-
     const saveMovie = () => {
         AsyncStorage.getItem('Boxd_Token')
         .then(token => {

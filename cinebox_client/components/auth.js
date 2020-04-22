@@ -12,7 +12,7 @@ export default function Auth(props) {
         getData()
     }, [])
 
-    const auth =  () => {
+    const auth = () => {
         if (regView) {
             fetch(`${variables.ip_address}/api/users/`, {
                 method: 'POST',
@@ -24,14 +24,15 @@ export default function Auth(props) {
                 .then(res => res.json())
                 .then((res) => {
                     AsyncStorage.setItem('Boxd_Token', res.token)
-                    .then(response => {
-                        setRegView(false);
-                        props.navigation.navigate("MovieList")
-                    })
-                    .catch(error => {
-                        // spinner and a retry for login until they log in or timeout
-                        // error message
-                    })
+                        .then(response => {
+                            setRegView(false);
+                            props.navigation.navigate("MovieList")
+                        })
+                        .catch(error => {
+                            console.log(error)
+                            // spinner and a retry for login until they log in or timeout
+                            // error message
+                        })
                 })
                 .catch(err => console.log(err))
         } else {
@@ -45,11 +46,11 @@ export default function Auth(props) {
                 .then(res => res.json())
                 .then((res) => {
                     AsyncStorage.setItem('Boxd_Token', res.token)
-                    .then(response => props.navigation.navigate("MovieList"))
-                    .catch(error => {
-                        // spinner and a retry for login until they log in or timeout
-                        // error message
-                    })
+                        .then(response => props.navigation.navigate("MovieList"))
+                        .catch(error => {console.log(error)
+                            // spinner and a retry for login until they log in or timeout
+                            // error message
+                        })
                 })
                 .catch(error => console.log(error));
         }
@@ -59,12 +60,12 @@ export default function Auth(props) {
     // }
     const getData = () => {
         AsyncStorage.getItem('Boxd_Token')
-        .then(response => props.navigation.navigate('MovieList'))
-        .catch(error => {
-           props.navigattion.navigate
-        });
+            .then(response => props.navigation.navigate('MovieList'))
+            .catch(error => {
+                props.navigattion.navigate
+            });
     }
-    
+
     const toggleView = () => {
         setRegView(!regView);
     }
@@ -86,8 +87,8 @@ export default function Auth(props) {
             />
             <Button onPress={() => auth()} title={regView ? 'Register' : 'Login'} />
             <TouchableOpacity onPress={() => toggleView()}>
-                {regView ? <Text style={styles.viewText}>Already have an Acccoun? Go to Login!</Text> : 
-                <Text style={styles.viewText}>Don't have an account? Register Here!</Text>}
+                {regView ? <Text style={styles.viewText}>Already have an Acccoun? Go to Login!</Text> :
+                    <Text style={styles.viewText}>Don't have an account? Register Here!</Text>}
             </TouchableOpacity>
         </View>
     );
