@@ -5,8 +5,8 @@ import variables from './variables'
 
 export default function MovieList(props) {
 
-
     const [movies, setMovies] = useState([])
+    const [refresh, setRefresh] = useState(false)
     
     const getMovies = (token) => {
         console.log("got here getMovies")
@@ -30,12 +30,11 @@ export default function MovieList(props) {
 
     useEffect(() => {
         getData();
-    }, []);
+    }, [refresh]);
 
     const movieClicked = (movie) => {
-        console.log('the movie', props);
-        
-        props.navigation.navigate('Detail', { movie: movie, title: movie.title})
+        setRefresh(!refresh)
+        props.navigation.navigate('Detail', { movie: movie, title: movie.title, refresh, setRefresh})
     }
 
     return (

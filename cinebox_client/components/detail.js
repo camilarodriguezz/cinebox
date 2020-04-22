@@ -25,6 +25,8 @@ export default function Detail(props) {
                 .then(res => res.json())
                 .then(res => {
                     setHighlight(0)
+                    props.navigation.state.params.setRefresh(!props.navigation.state.params.refresh)
+                    // console.log('refresh', props.navigation.state.params.refresh)
                     Alert.alert("Rating", res.message)
                 })
                 .catch(err => console.log(err))

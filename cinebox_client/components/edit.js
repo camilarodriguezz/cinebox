@@ -4,46 +4,92 @@ import variables from './variables'
 
 export default function Edit(props) {
 
+    console.log('PROPS---->',props.navigation.state);
+    
+
     const movie = props.navigation.getParam('movie', null)
     const [title, setTitle] = useState(movie.title)
     const [description, setDescription] = useState(movie.description)
+    const [token, setToken] = useState(null)
+
+    const getToken = () => {
+        AsyncStorage.getItem('Boxd_Token')
+            .then(response => setToken(response))
+            .catch(error => console.log(error));
+    }
+
+    useEffect(() => {
+        getToken();
+    }, []);
 
     const saveMovie = () => {
-        AsyncStorage.getItem('Boxd_Token')
-        .then(token => {
-            if (movie.id) {
-                fetch(`${variables.ip_address}/api/movies/${movie.id}/`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Token ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ title: title, description: description })
+        if (movie.id) {
+            fetch(`${variables.ip_address}/api/movies/${movie.id}/`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title, description: description })
+            })
+                .then(res => res.json())
+                .then(movie => {
+                    props.navigation.navigate('Detail', { movie: movie, title: movie.title })
                 })
-                    .then(res => res.json())
-                    .then(movie => {
-                        props.navigation.navigate('Detail', { movie: movie, title: movie.title })
-                    })
-                    .catch(err => console.log(err))
-            } else {
-                fetch(`${variables.ip_address}/api/movies/`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Token ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ title: title, description: description })
+                .catch(err => console.log(err))
+        } else {
+            fetch(`${variables.ip_address}/api/movies/`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title, description: description })
+            })
+                .then(res => res.json())
+                .then(movie => {
+                    props.navigation.navigate('MovieList')
                 })
-                    .then(res => res.json())
-                    .then(movie => {
-                        props.navigation.navigate('MovieList')
-                    })
-                    .catch(err => console.log(err))
+                .catch(err => console.log(err))
+        }
+    }
+
+    console.log('ttth', token);
+
+    const removeClicked = () => {
+        // const movie = props.navigation.getParam('movie')
+        console.log('ddd', movie.id);
+
+        fetch(`${variables.ip_address}/api/movies/${movie.id}/`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Token ${token}`,
+                'Content-Type': 'application/json'
             }
         })
-        .catch(error => props.navigation.navigate('Auth'));
-        
+            .then(res => {
+                props.navigation.state.params.setRefresh(!props.navigation.state.params.refresh)
+                console.log('refresh after remove', props.navigation.state.params.refresh);
+                
+                props.navigation.navigate('MovieList')
+            })
+            .catch(err => console.log(err))
     }
+
+    Edit.navigationOptions = screenProps => ({
+        title: screenProps.navigation.getParam('title'),
+        headerStyle: {
+            backgroundColor: 'orange'
+        },
+        headerTintColor: 'white',
+        headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 24,
+        },
+        headerRight: () =>
+            <Button title='Remove' color='white'
+                onPress={() => removeClicked()} />
+    })
 
     return (
         <View style={styles.container}>
@@ -62,35 +108,7 @@ export default function Edit(props) {
     );
 }
 
-Edit.navigationOptions = screenProps => ({
-    title: screenProps.navigation.getParam('title'),
-    headerStyle: {
-        backgroundColor: 'orange'
-    },
-    headerTintColor: 'white',
-    headerTitleStyle: {
-        fontWeight: 'bold',
-        fontSize: 24,
-    },
-    headerRight: () =>
-        <Button title='Remove' color='white'
-            onPress={() => removeClicked(screenProps)} />
-})
 
-const removeClicked = (props) => {
-    const movie = props.navigation.getParam('movie')
-    fetch(`${variables.ip_address}/api/movies/${movie.id}/`, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Token ${token}`,
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(res => {
-            props.navigation.navigate('MovieList')
-        })
-        .catch(err => console.log(err))
-}
 
 const styles = StyleSheet.create({
     container: {
