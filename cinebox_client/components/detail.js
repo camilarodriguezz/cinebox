@@ -3,27 +3,39 @@ import { StyleSheet, Text, View, Button, Alert, AsyncStorage } from 'react-nativ
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import variables from './variables'
+import {CineboxContext} from './CineboxProvider';
 
 export default function Detail(props) {
 
+    console.log('Detail context Token',CineboxContext._currentValue.token);
+    console.log('refresh state',CineboxContext._currentValue.refresh);
+     
+
     const movie = props.navigation.getParam('movie', null);
-    const token = props.navigation.state.params.token
+    const token = CineboxContext._currentValue.token
     const [detail, setDetail] = useState({})
     const [highlight, setHighlight] = useState(0);
+    CineboxContext._currentValue.refresh = !CineboxContext._currentValue.refresh
 
-    useEffect(() => {
-        fetch(`${variables.ip_address}/api/movies/${movie.id}/`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Token ${token}`,
-            },
-        })
-            .then(res => res.json())
-            .then(jsonRes => {
-                setDetail(jsonRes)
-            })
-            .catch(err => console.log(err))
-    }, [highlight]);
+    console.log('refressssh state',CineboxContext._currentValue.refresh);
+    
+
+    console.log('toki', token);
+    
+
+    // useEffect(() => {
+    //     fetch(`${variables.ip_address}/api/movies/${movie.id}/`, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Authorization': `Token ${token}`,
+    //         },
+    //     })
+    //         .then(res => res.json())
+    //         .then(jsonRes => {
+    //             setDetail(jsonRes)
+    //         })
+    //         .catch(err => console.log(err))
+    // }, [highlight]);
 
     const rateClicked = () => {
         console.log("rating token, ", token);
@@ -40,8 +52,11 @@ export default function Detail(props) {
                 .then(res => res.json())
                 .then(res => {
                     setHighlight(0)
-                    props.navigation.state.params.setRefresh(!props.navigation.state.params.refresh)
-                    console.log('refresh', props.navigation.state.params.refresh)
+                    // props.navigation.state.params.setRefresh(!props.navigation.state.params.refresh)
+                    // console.log('refresh', props.navigation.state.params.refresh)
+                    // CineboxContext._currentValue.setRefresh(!CineboxContext._currentValue.refresh)
+                    // console.log('refresh rateClicked', CineboxContext._currentValue.refresh);
+                    
                     Alert.alert("Rating", res.message)
                 })
                 .catch(err => console.log(err))
@@ -51,12 +66,12 @@ export default function Detail(props) {
     return (
         <View style={styles.container}>
             <View style={styles.starContainer}>
-                <FontAwesomeIcon style={detail.avg_rating > 0 ? styles.orange : styles.white} icon={faStar} />
-                <FontAwesomeIcon style={detail.avg_rating > 1 ? styles.orange : styles.white} icon={faStar} />
-                <FontAwesomeIcon style={detail.avg_rating > 2 ? styles.orange : styles.white} icon={faStar} />
-                <FontAwesomeIcon style={detail.avg_rating > 3 ? styles.orange : styles.white} icon={faStar} />
-                <FontAwesomeIcon style={detail.avg_rating > 4 ? styles.orange : styles.white} icon={faStar} />
-                <Text style={styles.white}>({detail.num_of_ratings})</Text>
+                <FontAwesomeIcon style={movie.avg_rating > 0 ? styles.orange : styles.white} icon={faStar} />
+                <FontAwesomeIcon style={movie.avg_rating > 1 ? styles.orange : styles.white} icon={faStar} />
+                <FontAwesomeIcon style={movie.avg_rating > 2 ? styles.orange : styles.white} icon={faStar} />
+                <FontAwesomeIcon style={movie.avg_rating > 3 ? styles.orange : styles.white} icon={faStar} />
+                <FontAwesomeIcon style={movie.avg_rating > 4 ? styles.orange : styles.white} icon={faStar} />
+                <Text style={styles.white}>({movie.num_of_ratings})</Text>
             </View>
             <Text style={styles.description}>{movie.description}</Text>
             <View style={styles.stars} />

@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, Button, AsyncStorage, RefreshControl } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import variables from './variables'
+import variables from './variables';
+import {CineboxContext} from './CineboxProvider';
 
 export default function MovieList(props) {
 
+    console.log('MovieList context Token',CineboxContext._currentValue.token);
+
     const [movies, setMovies] = useState([])
-    const [refresh, setRefresh] = useState(false)
+    const [refresh, setRefresh] = useState(CineboxContext._currentValue.refresh)
     const [token, setToken] = useState(null)
-    
+
+    CineboxContext._currentValue.setToken(token)
+    CineboxContext._currentValue.refresh = !CineboxContext._currentValue.refresh
+
     const getMovies = (token) => {
         console.log("got here getMovies")
         fetch(`${variables.ip_address}/api/movies/`, {
@@ -20,7 +26,6 @@ export default function MovieList(props) {
             .then(res => res.json())
             .then(jsonRes => {
                 setMovies(jsonRes)
-                // setRefresh(!refresh)
             })
             .catch(err => console.log(err))
     }
@@ -39,7 +44,7 @@ export default function MovieList(props) {
     }, [refresh]);
 
     const movieClicked = (movie) => {
-        props.navigation.navigate('Detail', { movie: movie, title: movie.title, refresh, setRefresh, token})
+        props.navigation.navigate('Detail', { movie: movie, title: movie.title,})
     }
 
     return (

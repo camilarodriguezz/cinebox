@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, AsyncStorage, TextInput, Alert } from 'react-native';
 import variables from './variables'
+import {CineboxContext} from './CineboxProvider';
 
 export default function Edit(props) {
 
-    console.log('PROPS---->', props);
+    console.log('Edit context Token',CineboxContext._currentValue.token);
 
     const movie = props.navigation.getParam('movie', null)
     const [title, setTitle] = useState(movie.title)
     const [description, setDescription] = useState(movie.description)
-    const token = props.navigation.state.params.token
+    const token = CineboxContext._currentValue.token
 
     console.log('token edit',token);
     

@@ -5,8 +5,10 @@ import Edit from './components/Edit';
 import Auth from './components/Auth';
 
 import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack'
+import { createStackNavigator } from 'react-navigation-stack';
 import 'react-native-gesture-handler';
+
+import { CineboxProvider, CineboxContext } from './components/CineboxProvider';
 
 const AppNavigator = createStackNavigator({
   Auth: { screen: Auth, },
@@ -15,6 +17,14 @@ const AppNavigator = createStackNavigator({
   Edit: { screen: Edit },
 })
 
-const App = createAppContainer(AppNavigator);
+const AppContainer = createAppContainer(AppNavigator);
+
+const App = () => {
+  return (
+    <CineboxProvider>
+      <AppContainer />
+    </CineboxProvider>
+  )
+}
 
 export default App;
