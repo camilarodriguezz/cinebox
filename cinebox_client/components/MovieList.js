@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, Image, Button, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, Button, AsyncStorage, RefreshControl } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import variables from './variables'
 
@@ -7,10 +7,10 @@ export default function MovieList(props) {
 
     const [movies, setMovies] = useState([])
     const [refresh, setRefresh] = useState(false)
+    const [token, setToken] = useState(null)
     
     const getMovies = (token) => {
         console.log("got here getMovies")
-        
         fetch(`${variables.ip_address}/api/movies/`, {
             method: 'GET',
             headers: {
@@ -18,14 +18,20 @@ export default function MovieList(props) {
             }
         })
             .then(res => res.json())
-            .then(jsonRes => setMovies(jsonRes))
+            .then(jsonRes => {
+                setMovies(jsonRes)
+                // setRefresh(!refresh)
+            })
             .catch(err => console.log(err))
     }
 
     const getData = () => {
         AsyncStorage.getItem('Boxd_Token')
-        .then(response => getMovies(response))
-        .catch(error => props.navigation.navigate('Auth'));
+            .then(response => {
+                getMovies(response)
+                setToken(response)
+            })
+            .catch(error => props.navigation.navigate('Auth'));
     }
 
     useEffect(() => {
@@ -33,12 +39,11 @@ export default function MovieList(props) {
     }, [refresh]);
 
     const movieClicked = (movie) => {
-        setRefresh(!refresh)
-        props.navigation.navigate('Detail', { movie: movie, title: movie.title, refresh, setRefresh})
+        props.navigation.navigate('Detail', { movie: movie, title: movie.title, refresh, setRefresh, token})
     }
 
     return (
-        <View style={styles.container}>
+        <View style={styles.container} >
             <Image style={styles.image} source={require('../assets/MR_logo.png')} />
             <FlatList
                 data={movies}

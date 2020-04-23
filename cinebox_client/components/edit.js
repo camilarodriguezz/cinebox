@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, AsyncStorage, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, AsyncStorage, TextInput, Alert } from 'react-native';
 import variables from './variables'
 
 export default function Edit(props) {
 
-    console.log('PROPS---->',props.navigation.state);
-    
+    console.log('PROPS---->', props);
 
     const movie = props.navigation.getParam('movie', null)
     const [title, setTitle] = useState(movie.title)
     const [description, setDescription] = useState(movie.description)
-    const [token, setToken] = useState(null)
+    const token = props.navigation.state.params.token
 
-    const getToken = () => {
-        AsyncStorage.getItem('Boxd_Token')
-            .then(response => setToken(response))
-            .catch(error => console.log(error));
-    }
+    console.log('token edit',token);
+    
 
-    useEffect(() => {
-        getToken();
-    }, []);
+    // const getToken = () => {
+    //     AsyncStorage.getItem('Boxd_Token')
+    //         .then(response => setToken(response))
+    //         .catch(error => console.log(error));
+    // }
+
+    // useEffect(() => {
+    //     getToken();
+    // }, []);
 
     const saveMovie = () => {
         if (movie.id) {
@@ -57,7 +59,7 @@ export default function Edit(props) {
     console.log('ttth', token);
 
     const removeClicked = () => {
-        // const movie = props.navigation.getParam('movie')
+        const movie = props.navigation.getParam('movie')
         console.log('ddd', movie.id);
 
         fetch(`${variables.ip_address}/api/movies/${movie.id}/`, {
@@ -68,9 +70,8 @@ export default function Edit(props) {
             }
         })
             .then(res => {
-                props.navigation.state.params.setRefresh(!props.navigation.state.params.refresh)
+                props.navigation.state.params.setRefresh(!props.navigation.state.params.refresh);
                 console.log('refresh after remove', props.navigation.state.params.refresh);
-                
                 props.navigation.navigate('MovieList')
             })
             .catch(err => console.log(err))
@@ -79,7 +80,7 @@ export default function Edit(props) {
     Edit.navigationOptions = screenProps => ({
         title: screenProps.navigation.getParam('title'),
         headerStyle: {
-            backgroundColor: 'orange'
+            backgroundColor: 'orange',
         },
         headerTintColor: 'white',
         headerTitleStyle: {
@@ -107,6 +108,7 @@ export default function Edit(props) {
         </View>
     );
 }
+
 
 
 

@@ -7,12 +7,27 @@ import variables from './variables'
 export default function Detail(props) {
 
     const movie = props.navigation.getParam('movie', null);
-    const [token, setToken] = useState(null)
+    const token = props.navigation.state.params.token
+    const [detail, setDetail] = useState({})
     const [highlight, setHighlight] = useState(0);
-    //useeffect -> get token -> get request -> setState
+
+    useEffect(() => {
+        fetch(`${variables.ip_address}/api/movies/${movie.id}/`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Token ${token}`,
+            },
+        })
+            .then(res => res.json())
+            .then(jsonRes => {
+                setDetail(jsonRes)
+            })
+            .catch(err => console.log(err))
+    }, [highlight]);
 
     const rateClicked = () => {
-        
+        console.log("rating token, ", token);
+
         if (highlight > 0 && highlight < 6) {
             fetch(`${variables.ip_address}/api/movies/${movie.id}/rate_movie/`, {
                 method: 'POST',
@@ -26,32 +41,22 @@ export default function Detail(props) {
                 .then(res => {
                     setHighlight(0)
                     props.navigation.state.params.setRefresh(!props.navigation.state.params.refresh)
-                    // console.log('refresh', props.navigation.state.params.refresh)
+                    console.log('refresh', props.navigation.state.params.refresh)
                     Alert.alert("Rating", res.message)
                 })
                 .catch(err => console.log(err))
         }
     }
 
-    const getToken = () => {
-        AsyncStorage.getItem('Boxd_Token')
-            .then(response => setToken(response))
-            .catch(error => console.log(error));
-    }
-
-    useEffect(() => {
-        getToken();
-    }, []);
-
     return (
         <View style={styles.container}>
             <View style={styles.starContainer}>
-                <FontAwesomeIcon style={movie.avg_rating > 0 ? styles.orange : styles.white} icon={faStar} />
-                <FontAwesomeIcon style={movie.avg_rating > 1 ? styles.orange : styles.white} icon={faStar} />
-                <FontAwesomeIcon style={movie.avg_rating > 2 ? styles.orange : styles.white} icon={faStar} />
-                <FontAwesomeIcon style={movie.avg_rating > 3 ? styles.orange : styles.white} icon={faStar} />
-                <FontAwesomeIcon style={movie.avg_rating > 4 ? styles.orange : styles.white} icon={faStar} />
-                <Text style={styles.white}>({movie.num_of_ratings})</Text>
+                <FontAwesomeIcon style={detail.avg_rating > 0 ? styles.orange : styles.white} icon={faStar} />
+                <FontAwesomeIcon style={detail.avg_rating > 1 ? styles.orange : styles.white} icon={faStar} />
+                <FontAwesomeIcon style={detail.avg_rating > 2 ? styles.orange : styles.white} icon={faStar} />
+                <FontAwesomeIcon style={detail.avg_rating > 3 ? styles.orange : styles.white} icon={faStar} />
+                <FontAwesomeIcon style={detail.avg_rating > 4 ? styles.orange : styles.white} icon={faStar} />
+                <Text style={styles.white}>({detail.num_of_ratings})</Text>
             </View>
             <Text style={styles.description}>{movie.description}</Text>
             <View style={styles.stars} />
@@ -80,7 +85,7 @@ Detail.navigationOptions = screenProps => ({
     },
     headerRight: () =>
         <Button title='Edit' color='white'
-            onPress={() => screenProps.navigation.navigate('Edit', { movie: screenProps.navigation.getParam('movie') })} />
+            onPress={() => screenProps.navigation.navigate('Edit', { movie: screenProps.navigation.getParam('movie'), token: screenProps.navigation.state.params.token})} />
 })
 
 const styles = StyleSheet.create({

@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 15755,
-  "expoServerNgrokUrl": "https://yf-tty.anonymous.cinebox-client.exp.direct",
-  "packagerNgrokUrl": "https://packager.yf-tty.anonymous.cinebox-client.exp.direct",
-  "ngrokPid": 15765,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }
