@@ -16,6 +16,8 @@ export default function Detail(props) {
     const [detail, setDetail] = useState({})
     const [highlight, setHighlight] = useState(0);
     CineboxContext._currentValue.refresh = !CineboxContext._currentValue.refresh
+    console.log(CineboxContext);
+    
 
     console.log('refressssh state',CineboxContext._currentValue.refresh);
     
@@ -137,10 +139,10 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     purple: {
-        color: 'purple'
+        color: 'orange'
     },
     gray: {
-        color: 'gray'
+        color: 'white'
     },
     description: {
         fontSize: 20,
@@ -150,5 +152,5 @@ const styles = StyleSheet.create({
     stars: {
         borderBottomColor: 'white',
         borderBottomWidth: 2,
-    }
+    },
 });

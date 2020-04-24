@@ -62,7 +62,8 @@ export default function Auth(props) {
         AsyncStorage.getItem('Boxd_Token')
             .then(response => props.navigation.navigate('MovieList'))
             .catch(error => {
-                props.navigattion.navigate
+                console.log(error);
+                
             });
     }
 

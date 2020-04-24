@@ -50,6 +50,7 @@ export default function MovieList(props) {
     return (
         <View style={styles.container} >
             <Image style={styles.image} source={require('../assets/MR_logo.png')} />
+            <View style={styles.line} />
             <FlatList
                 data={movies}
                 renderItem={({ item }) => (
@@ -62,6 +63,7 @@ export default function MovieList(props) {
                 )}
                 keyExtractor={(item, index) => index.toString()}
             />
+            <View style={styles.line2} />
         </View>
     );
 }
@@ -77,9 +79,16 @@ MovieList.navigationOptions = screenProps => ({
         fontSize: 24,
     },
     headerRight: () =>
-        <Button title='Add New' color='white'
-            onPress={() => screenProps.navigation.navigate('Edit', { movie: { title: '', description: '' } })} />
+        <Button title='Add New' color='white' onPress={() => screenProps.navigation.navigate('Edit', { movie: { title: '', description: '' } })} />
+    
 })
+
+// AsyncStorage.getItem('Boxd_Token')
+//             .then(response => props.navigation.navigate('MovieList'))
+//             .catch(error => {
+//                 console.log(error);
+                
+//             });
 
 const styles = StyleSheet.create({
     container: {
@@ -99,5 +108,13 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: 125,
-    }
+    },
+    line: {
+        borderBottomColor: '#282C35',
+        borderBottomWidth: 4,
+    },
+    line2: {
+        borderBottomColor: 'orange',
+        borderBottomWidth: 75,
+    },
 });

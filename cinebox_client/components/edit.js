@@ -5,14 +5,14 @@ import {CineboxContext} from './CineboxProvider';
 
 export default function Edit(props) {
 
-    console.log('Edit context Token',CineboxContext._currentValue.token);
-
+    // console.log('Edit context Token',CineboxContext._currentValue.token);
     const movie = props.navigation.getParam('movie', null)
     const [title, setTitle] = useState(movie.title)
     const [description, setDescription] = useState(movie.description)
     const token = CineboxContext._currentValue.token
 
-    console.log('token edit',token);
+    // console.log('token edit',token);
+    console.log('Context!!!!!!!', CineboxContext._currentValue.movie);
     
 
     // const getToken = () => {
@@ -37,6 +37,7 @@ export default function Edit(props) {
             })
                 .then(res => res.json())
                 .then(movie => {
+                    Alert.alert("Edited Movie")
                     props.navigation.navigate('Detail', { movie: movie, title: movie.title })
                 })
                 .catch(err => console.log(err))
@@ -57,7 +58,7 @@ export default function Edit(props) {
         }
     }
 
-    console.log('ttth', token);
+    // console.log('ttth', token);
 
     const removeClicked = () => {
         const movie = props.navigation.getParam('movie')

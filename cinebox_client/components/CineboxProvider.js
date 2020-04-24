@@ -6,6 +6,7 @@ class CineboxProvider extends React.Component {
     state = {
         token: '',
         refresh: false,
+        movie: {}
     }
 
     setToken = (token) => {
@@ -16,6 +17,10 @@ class CineboxProvider extends React.Component {
         this.setState({ refresh });
     }
 
+    setMovie = (movie) => {
+        this.setState({ movie });
+    }
+
     render() {
         return (
             <CineboxContext.Provider
@@ -23,7 +28,9 @@ class CineboxProvider extends React.Component {
                     token: this.state.token,
                     refresh: this.state.refresh,
                     setToken: this.setToken,
-                    setRefresh: this.setRefresh
+                    setRefresh: this.setRefresh,
+                    movie: this.state.movie,
+                    setMovie: this.setMovie,
                 }}
             >
                 {this.props.children}
