@@ -5,15 +5,10 @@ import {CineboxContext} from './CineboxProvider';
 
 export default function Edit(props) {
 
-    // console.log('Edit context Token',CineboxContext._currentValue.token);
     const movie = props.navigation.getParam('movie', null)
     const [title, setTitle] = useState(movie.title)
     const [description, setDescription] = useState(movie.description)
     const token = CineboxContext._currentValue.token
-
-    // console.log('token edit',token);
-    console.log('Context!!!!!!!', CineboxContext._currentValue.movie);
-    
 
     // const getToken = () => {
     //     AsyncStorage.getItem('Boxd_Token')
@@ -26,7 +21,7 @@ export default function Edit(props) {
     // }, []);
 
     const saveMovie = () => {
-        if (movie.id) {
+        // if (movie.id) {
             fetch(`${variables.ip_address}/api/movies/${movie.id}/`, {
                 method: 'PUT',
                 headers: {
@@ -41,29 +36,11 @@ export default function Edit(props) {
                     props.navigation.navigate('Detail', { movie: movie, title: movie.title })
                 })
                 .catch(err => console.log(err))
-        } else {
-            fetch(`${variables.ip_address}/api/movies/`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Token ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ title: title, description: description })
-            })
-                .then(res => res.json())
-                .then(movie => {
-                    props.navigation.navigate('MovieList')
-                })
-                .catch(err => console.log(err))
-        }
     }
 
-    // console.log('ttth', token);
 
     const removeClicked = () => {
         const movie = props.navigation.getParam('movie')
-        console.log('ddd', movie.id);
-
         fetch(`${variables.ip_address}/api/movies/${movie.id}/`, {
             method: 'DELETE',
             headers: {
@@ -73,7 +50,6 @@ export default function Edit(props) {
         })
             .then(res => {
                 props.navigation.state.params.setRefresh(!props.navigation.state.params.refresh);
-                console.log('refresh after remove', props.navigation.state.params.refresh);
                 props.navigation.navigate('MovieList')
             })
             .catch(err => console.log(err))
@@ -90,8 +66,7 @@ export default function Edit(props) {
             fontSize: 24,
         },
         headerRight: () =>
-            <Button title='Remove' color='white'
-                onPress={() => removeClicked()} />
+            <Button title='Remove' color='white' onPress={() => removeClicked()} />
     })
 
     return (
@@ -110,8 +85,6 @@ export default function Edit(props) {
         </View>
     );
 }
-
-
 
 
 const styles = StyleSheet.create({

@@ -3,6 +3,7 @@ import MovieList from './components/MovieList';
 import Detail from './components/Detail';
 import Edit from './components/Edit';
 import Auth from './components/Auth';
+import AddNew from './components/AddNew';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -15,6 +16,7 @@ const AppNavigator = createStackNavigator({
   MovieList: { screen: MovieList },
   Detail: { screen: Detail },
   Edit: { screen: Edit },
+  AddNew: { screen: AddNew},
 })
 
 const AppContainer = createAppContainer(AppNavigator);

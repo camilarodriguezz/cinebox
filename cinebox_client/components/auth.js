@@ -55,9 +55,7 @@ export default function Auth(props) {
                 .catch(error => console.log(error));
         }
     }
-    // const saveData = async (token) => {
-    //     await AsyncStorage.setItem('Boxd_Token', token)
-    // }
+
     const getData = () => {
         AsyncStorage.getItem('Boxd_Token')
             .then(response => props.navigation.navigate('MovieList'))

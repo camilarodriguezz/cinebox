@@ -7,37 +7,26 @@ import {CineboxContext} from './CineboxProvider';
 
 export default function Detail(props) {
 
-    console.log('Detail context Token',CineboxContext._currentValue.token);
-    console.log('refresh state',CineboxContext._currentValue.refresh);
-     
-
     const movie = props.navigation.getParam('movie', null);
     const token = CineboxContext._currentValue.token
-    const [detail, setDetail] = useState({})
+    // const [detail, setDetail] = useState({})
     const [highlight, setHighlight] = useState(0);
     CineboxContext._currentValue.refresh = !CineboxContext._currentValue.refresh
-    console.log(CineboxContext);
     
 
-    console.log('refressssh state',CineboxContext._currentValue.refresh);
-    
-
-    console.log('toki', token);
-    
-
-    // useEffect(() => {
-    //     fetch(`${variables.ip_address}/api/movies/${movie.id}/`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Authorization': `Token ${token}`,
-    //         },
-    //     })
-    //         .then(res => res.json())
-    //         .then(jsonRes => {
-    //             setDetail(jsonRes)
-    //         })
-    //         .catch(err => console.log(err))
-    // }, [highlight]);
+    useEffect(() => {
+        fetch(`${variables.ip_address}/api/movies/${movie.id}/`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Token ${token}`,
+            },
+        })
+            .then(res => res.json())
+            .then(jsonRes => {
+                setDetail(jsonRes)
+            })
+            .catch(err => console.log(err))
+    }, [highlight]);
 
     const rateClicked = () => {
         console.log("rating token, ", token);
@@ -54,11 +43,6 @@ export default function Detail(props) {
                 .then(res => res.json())
                 .then(res => {
                     setHighlight(0)
-                    // props.navigation.state.params.setRefresh(!props.navigation.state.params.refresh)
-                    // console.log('refresh', props.navigation.state.params.refresh)
-                    // CineboxContext._currentValue.setRefresh(!CineboxContext._currentValue.refresh)
-                    // console.log('refresh rateClicked', CineboxContext._currentValue.refresh);
-                    
                     Alert.alert("Rating", res.message)
                 })
                 .catch(err => console.log(err))
@@ -86,6 +70,7 @@ export default function Detail(props) {
                 <FontAwesomeIcon style={highlight > 4 ? styles.purple : styles.gray} icon={faStar} size={48} onPress={() => setHighlight(5)} />
                 <Button title="Rate Movie!" onPress={() => rateClicked()} />
             </View>
+            <View style={styles.line2} />
         </View>
     );
 }

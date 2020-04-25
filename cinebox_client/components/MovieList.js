@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, Image, Button, AsyncStorage, RefreshControl } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, Button, AsyncStorage } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import variables from './variables';
-import {CineboxContext} from './CineboxProvider';
+import { CineboxContext } from './CineboxProvider';
+
 
 export default function MovieList(props) {
 
-    console.log('MovieList context Token',CineboxContext._currentValue.token);
+    console.log('MovieList context Token', CineboxContext._currentValue.token);
 
     const [movies, setMovies] = useState([])
-    const [refresh, setRefresh] = useState(CineboxContext._currentValue.refresh)
+    // const [refresh, setRefresh] = useState(CineboxContext._currentValue.refresh)
+
+    const [refresh, setRefresh] = useState(false)
     const [token, setToken] = useState(null)
 
     CineboxContext._currentValue.setToken(token)
@@ -44,7 +47,8 @@ export default function MovieList(props) {
     }, [refresh]);
 
     const movieClicked = (movie) => {
-        props.navigation.navigate('Detail', { movie: movie, title: movie.title,})
+        props.navigation.navigate('Detail', { movie: movie, title: movie.title, })
+        setRefresh(!refresh)
     }
 
     return (
@@ -79,15 +83,14 @@ MovieList.navigationOptions = screenProps => ({
         fontSize: 24,
     },
     headerRight: () =>
-        <Button title='Add New' color='white' onPress={() => screenProps.navigation.navigate('Edit', { movie: { title: '', description: '' } })} />
-    
+        <Button title='Add New +' color='white' onPress={() => screenProps.navigation.navigate('AddNew')} />
 })
 
 // AsyncStorage.getItem('Boxd_Token')
 //             .then(response => props.navigation.navigate('MovieList'))
 //             .catch(error => {
 //                 console.log(error);
-                
+
 //             });
 
 const styles = StyleSheet.create({
