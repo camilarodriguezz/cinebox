@@ -73,7 +73,7 @@ export default function MovieList(props) {
 }
 
 MovieList.navigationOptions = screenProps => ({
-    title: "List of Movies",
+    title: "Movie List",
     headerStyle: {
         backgroundColor: '#FF9900'
     },
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: 125,
+        marginTop: 10,
     },
     line: {
         borderBottomColor: '#282C35',

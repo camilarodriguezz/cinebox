@@ -39,6 +39,7 @@ export default function AddNew() {
 }
 
 AddNew.navigationOptions = () => ({
+    title: "Add Movie",
     headerStyle: {
         backgroundColor: '#FF9900',
     },
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     btn : {
-        color: 'white',
+        color: '#fff',
         backgroundColor: '#FF9900',
         width: 130,
         height: 40,
