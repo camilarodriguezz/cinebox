@@ -3,8 +3,9 @@ import axios from 'axios'
 import { StyleSheet, Text, TextInput, View, Image, Button, ScrollView, TouchableHighlight, Modal } from 'react-native';
 
 export default function Search() {
+    // **********************   add your own api key from OMDB  *************************** //
 
-
+    
 
     const [state, setState] = useState({
         s: '',
@@ -23,7 +24,7 @@ export default function Search() {
     }
 
     const openPopup = (id) => {
-        axios(apiurl +"i="+id+"&"+key).then(({ data }) => {
+        axios(apiurl + "i=" + id + "&" + key).then(({ data }) => {
             let result = data;
             console.log("axios 2 result ", result)
             setState(prevState => {
@@ -31,8 +32,7 @@ export default function Search() {
             })
         })
     }
-    // console.log("the state results!!!!! ", state.results[0].imdbID);
-    
+
 
     return (
         <View style={styles.container}>
@@ -56,9 +56,21 @@ export default function Search() {
                     </TouchableHighlight>
                 )}
             </ScrollView>
-            
+
             <Modal animationType="fade" transparent={false} visible={(typeof state.selected.Title != 'undefined')}>
-                <Text>Hello World!</Text>
+
+                <View style={styles.popup}>
+                    <Text style={styles.poptitle}>{state.selected.Title}</Text>
+                    <Image style={styles.popPoster} source={{ uri: state.selected.Poster }} />
+                    <Text style={styles.rating} >Rating: {state.selected.imdbRating}</Text>
+                    <Text style={styles.rating} >Actors: {state.selected.Actors}</Text>
+                    <Text style={styles.writting} >{state.selected.Plot}</Text>
+                    <TouchableHighlight
+                        onPress={() => setState(prevState => { return { ...prevState, selected: {} } })}>
+                        <Text style={styles.closeBtn}>Close</Text>
+                    </TouchableHighlight>
+                </View>
+
             </Modal>
             <View style={styles.line2} />
         </View>
@@ -86,7 +98,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         paddingTop: 50,
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
     },
     title: {
         color: '#fff',
@@ -122,10 +134,50 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         borderTopRightRadius: 20,
         borderTopLeftRadius: 20,
-
     },
     line2: {
         borderBottomWidth: 75,
+    },
+
+    // popup *****************
+    popup: {
+        flex: 1,
+        backgroundColor: '#282C35',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    popPoster: {
+        width: 300,
+        height: 400,
+        resizeMode: 'cover',
+    },
+    poptitle: {
+        fontSize: 30,
+        fontWeight: '900',
+        color: 'white',
+        paddingHorizontal: 5,
+        padding: 10,
+    },
+    rating: {
+        fontSize: 25,
+        fontWeight: '500',
+        color: 'white',
+        padding: 10,
+    },
+    writting: {
+        fontSize: 20,
+        fontWeight: '300',
+        color: 'white',
+        paddingHorizontal: 10,
+        padding: 10,
+    },
+    closeBtn: {
+        padding: 20,
+        fontSize: 20,
+        color: 'white',
+        fontWeight: '700',
+        backgroundColor: 'orange',
+        margin: 10,
     },
 
 });
