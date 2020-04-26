@@ -83,7 +83,9 @@ MovieList.navigationOptions = screenProps => ({
         fontSize: 24,
     },
     headerRight: () =>
-        <Button title='Add New +' color='white' onPress={() => screenProps.navigation.navigate('AddNew')} />
+        <Button title='Add New +' color='white' onPress={() => screenProps.navigation.navigate('AddNew')} />,
+    headerLeft: () =>
+        <Button title='Search' color='white' onPress={() => screenProps.navigation.navigate('Search')} />,
 })
 
 // AsyncStorage.getItem('Boxd_Token')

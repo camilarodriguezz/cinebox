@@ -4,6 +4,7 @@ import Detail from './components/Detail';
 import Edit from './components/Edit';
 import Auth from './components/Auth';
 import AddNew from './components/AddNew';
+import Search from './components/Search';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -17,6 +18,7 @@ const AppNavigator = createStackNavigator({
   Detail: { screen: Detail },
   Edit: { screen: Edit },
   AddNew: { screen: AddNew},
+  Search: { screen: Search},
 })
 
 const AppContainer = createAppContainer(AppNavigator);
