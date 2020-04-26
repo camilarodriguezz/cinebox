@@ -96,7 +96,7 @@ export default function Auth(props) {
 Auth.navigationOptions = () => ({
     title: "Login/Registration",
     headerStyle: {
-        backgroundColor: 'orange'
+        backgroundColor: '#FF9900'
     },
     headerTintColor: 'white',
     headerTitleStyle: {

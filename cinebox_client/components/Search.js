@@ -83,15 +83,15 @@ export default function Search() {
 Search.navigationOptions = props => ({
     title: "Search for Movies",
     headerStyle: {
-        backgroundColor: 'orange'
+        backgroundColor: '#FF9900'
     },
     headerTintColor: 'white',
     headerTitleStyle: {
         fontWeight: 'bold',
         fontSize: 24,
     },
-    headerRight: () =>
-        <Button title='Add New +' color='white' onPress={() => props.navigation.navigate('AddNew')} />,
+    // headerRight: () =>
+    //     <Button title='Add New +' color='white' onPress={() => props.navigation.navigate('AddNew')} />,
 })
 
 const styles = StyleSheet.create({
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: '#fff',
         borderRadius: 8,
-        marginBottom: 48,
+        marginBottom: 10,
     },
     results: {
         flex: 1,
@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         borderTopRightRadius: 20,
         borderTopLeftRadius: 20,
+        marginTop: 10,
     },
     line2: {
         borderBottomWidth: 75,
@@ -148,6 +149,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#282C35',
         alignItems: 'center',
         justifyContent: 'center',
+        padding: 5,
     },
     popPoster: {
         width: 300,
@@ -155,31 +157,31 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     poptitle: {
-        fontSize: 30,
-        fontWeight: '900',
+        fontSize: 25,
+        fontWeight: '700',
         color: 'white',
         paddingHorizontal: 5,
         padding: 10,
     },
     rating: {
-        fontSize: 25,
+        fontSize: 20,
         fontWeight: '500',
         color: 'white',
-        padding: 10,
+        padding: 5,
     },
     writting: {
         fontSize: 20,
         fontWeight: '300',
         color: 'white',
         paddingHorizontal: 10,
-        padding: 10,
+        padding: 5,
     },
     closeBtn: {
         padding: 20,
         fontSize: 20,
         color: 'white',
         fontWeight: '700',
-        backgroundColor: 'orange',
+        backgroundColor: '#FF9900',
         margin: 10,
     },
 

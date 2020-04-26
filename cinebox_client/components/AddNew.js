@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, AsyncStorage, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, AsyncStorage, TextInput, Alert, TouchableHighlight } from 'react-native';
 import variables from './variables'
 import {CineboxContext} from './CineboxProvider';
 
@@ -28,23 +28,19 @@ export default function AddNew() {
     return (
         <View style={styles.container}>
             <Text style={styles.label}>Title</Text>
-            <TextInput
-                style={styles.input} placeholder="Title"
-                onChangeText={text => setTitle(text) } 
-            />
+            <TextInput style={styles.input} placeholder="Title" onChangeText={text => setTitle(text) }/>
             <Text style={styles.label}>Description</Text>
-            <TextInput
-                style={styles.input} placeholder="Description"
-                onChangeText={text => setDescription(text)} 
-            />
+            <TextInput style={styles.input} placeholder="Description" onChangeText={text => setDescription(text)} />
+            <View style={styles.btn}>
             <Button onPress={() => addMovie()} title={"Add Movie!"} />
+            </View>
         </View>
     )
 }
 
 AddNew.navigationOptions = () => ({
     headerStyle: {
-        backgroundColor: 'orange',
+        backgroundColor: '#FF9900',
     },
     headerTintColor: 'white',
     headerTitleStyle: {
@@ -58,17 +54,29 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#282C35',
-        padding: 10
+        padding: 10,
+        alignItems: 'center',
     },
     label: {
-        fontSize: 20,
         color: 'white',
         padding: 10,
+        fontSize: 25,
+        fontWeight: '700',
     },
     input: {
         fontSize: 24,
         backgroundColor: 'white',
         padding: 10,
         margin: 10,
-    }
+        borderRadius: 10,
+        width: '100%',
+    },
+    btn : {
+        color: 'white',
+        backgroundColor: '#FF9900',
+        width: 130,
+        height: 40,
+        borderRadius: 10,
+        margin: 20
+    },
 });

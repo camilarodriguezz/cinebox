@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, Button, AsyncStorage } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import variables from './variables';
 import { CineboxContext } from './CineboxProvider';
 
@@ -74,7 +75,7 @@ export default function MovieList(props) {
 MovieList.navigationOptions = screenProps => ({
     title: "List of Movies",
     headerStyle: {
-        backgroundColor: 'orange'
+        backgroundColor: '#FF9900'
     },
     headerTintColor: 'white',
     headerTitleStyle: {
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 4,
     },
     line2: {
-        borderBottomColor: 'orange',
+        borderBottomColor: '#FF9900',
         borderBottomWidth: 75,
     },
 });

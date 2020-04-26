@@ -78,7 +78,7 @@ export default function Detail(props) {
 Detail.navigationOptions = screenProps => ({
     title: screenProps.navigation.getParam('title'),
     headerStyle: {
-        backgroundColor: 'orange'
+        backgroundColor: '#FF9900',
     },
     headerTintColor: 'white',
     headerTitleStyle: {
