@@ -54,7 +54,6 @@ export default function MovieList(props) {
     return (
         <View style={styles.container} >
             <Image style={styles.image} source={require('../assets/MR_logo.png')} />
-            <View style={styles.line} />
             <FlatList
                 data={movies}
                 renderItem={({ item }) => (
@@ -98,13 +97,15 @@ MovieList.navigationOptions = screenProps => ({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'black',
+        backgroundColor: '#282C35',
     },
     item: {
-        flex: 1,
-        padding: 10,
-        height: 50,
-        backgroundColor: 'black',
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: '700',
+        padding: 20,
+        backgroundColor: '#445565',
+        margin: 10,
     },
     itemText: {
         color: 'white',

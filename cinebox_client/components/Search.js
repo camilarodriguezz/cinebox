@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, FlatList, Image, Button, ScrollView, AsyncStorage } from 'react-native';
+import axios from 'axios'
+import { StyleSheet, Text, TextInput, View, Image, Button, ScrollView, TouchableHighlight, Modal } from 'react-native';
 
 export default function Search() {
 
-    const apiurl = "http://www.omdbapi.com/?i=tt3896198&apikey=38e4a2a9";
+
 
     const [state, setState] = useState({
         s: '',
@@ -11,27 +12,33 @@ export default function Search() {
         selected: {},
     })
 
-    // const [results, setResults] = useState([])
-    // const [s, setS] = useState('')
-    // const [state, setstate] = useState({})
-
     const search = () => {
-        fetch(apiurl + "&s=" + state.s)
-            .then(response => {
-                return response.json();
-            }).then(response => {
-                console.log("responeroski ", response)
-                setState.results([...response.Search])
-            }).catch(error => {
-                console.log(error);
+        axios(apiurl + extra + "&" + key + "&s=" + state.s).then(({ data }) => {
+            let results = data.Search;
+            console.log("axios 1 results ", results);
+            setState(prevState => {
+                return { ...prevState, results: results }
             })
+        })
     }
+
+    const openPopup = (id) => {
+        axios(apiurl +"i="+id+"&"+key).then(({ data }) => {
+            let result = data;
+            console.log("axios 2 result ", result)
+            setState(prevState => {
+                return { ...prevState, selected: result }
+            })
+        })
+    }
+    // console.log("the state results!!!!! ", state.results[0].imdbID);
+    
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Cinebox Movie Search</Text>
             <TextInput
-                style={styles.searchBox} value={state.s}
+                style={styles.searchBox}
                 onChangeText={text => setState(prevState => {
                     return { ...prevState, s: text }
                 })}
@@ -40,13 +47,20 @@ export default function Search() {
             />
 
             <ScrollView style={styles.results}>
-                {state.results.map(result => {
-                    <View key={result.imdbID} style={styles.result}>
-                        <Text style={styles.heading}>{result.Title}</Text>
-                    </View>
-                })}
+                {state.results.map((result, index) =>
+                    <TouchableHighlight key={result.imdbID} onPress={() => openPopup(result.imdbID)}>
+                        <View key={result.imdbID} style={styles.result}>
+                            <Image style={styles.poster} source={{ uri: result.Poster }} />
+                            <Text style={styles.heading}>{result.Title}</Text>
+                        </View>
+                    </TouchableHighlight>
+                )}
             </ScrollView>
-
+            
+            <Modal animationType="fade" transparent={false} visible={(typeof state.selected.Title != 'undefined')}>
+                <Text>Hello World!</Text>
+            </Modal>
+            <View style={styles.line2} />
         </View>
     );
 }
@@ -71,7 +85,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#282C35',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingTop: 70,
+        paddingTop: 50,
         paddingHorizontal: 20
     },
     title: {
@@ -93,7 +107,6 @@ const styles = StyleSheet.create({
     results: {
         flex: 1,
         width: '100%',
-        marginBottom: 20,
     },
     heading: {
         color: '#fff',
@@ -101,6 +114,18 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         padding: 20,
         backgroundColor: '#445565',
-    }
+        marginBottom: 10,
+    },
+    poster: {
+        width: '100%',
+        height: 300,
+        resizeMode: 'cover',
+        borderTopRightRadius: 20,
+        borderTopLeftRadius: 20,
+
+    },
+    line2: {
+        borderBottomWidth: 75,
+    },
 
 });
