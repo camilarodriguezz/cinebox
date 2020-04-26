@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios'
 import { StyleSheet, Text, TextInput, View, Image, Button, ScrollView, TouchableHighlight, Modal } from 'react-native';
+import apiKey from './Key'
 
 export default function Search() {
     // **********************   add your own api key from OMDB  *************************** //
 
-    
+    // const apiurl = "http://www.omdbapi.com/?i=tt3896198&apikey=38e4a2a9";
+    const apiurl = "http://www.omdbapi.com/?";
+    const extra = "i=tt3896198"
+    const key = apiKey.key
 
     const [state, setState] = useState({
         s: '',
