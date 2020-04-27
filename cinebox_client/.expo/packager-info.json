@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 2699,
+  "packagerPid": 4889,
   "expoServerNgrokUrl": "https://rc-dyt.anonymous.cinebox-client.exp.direct",
   "packagerNgrokUrl": "https://packager.rc-dyt.anonymous.cinebox-client.exp.direct",
-  "ngrokPid": 2709,
+  "ngrokPid": 4901,
   "webpackServerPort": null
 }

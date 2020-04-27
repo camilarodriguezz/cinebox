@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, Image, Button, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, FlatList, ScrollView, Image, Button, AsyncStorage } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import variables from './variables';
 import { CineboxContext } from './CineboxProvider';
 
 export default function MovieList(props) {
-    const [refreshing, setRefreshing] = React.useState(false);
-    // test
-    console.log('MovieList context Token', CineboxContext._currentValue.token);
 
     const [movies, setMovies] = useState([])
-    // const [refresh, setRefresh] = useState(CineboxContext._currentValue.refresh)
     const [refresh, setRefresh] = useState(false)
     const [token, setToken] = useState(null)
 
@@ -53,24 +49,21 @@ export default function MovieList(props) {
         setRefresh(!refresh)
     }
 
-    let Image_Http_URL = { uri: 'https://reactnativecode.com/wp-content/uploads/2017/05/react_thumb_install.png' };
-
     return (
         <View style={styles.container} >
             <Image style={styles.image} source={require('../assets/MR_logo.png')} />
-            <FlatList style={styles.item}
-                data={movies}
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => movieClicked(item)}>
-                        <View style={styles.item}>
+
+            <ScrollView style={styles.item}>
+                {movies.map((item, index) => 
+                    <TouchableOpacity key={index} onPress={() => movieClicked(item)}>
+                        <View key={index} style={styles.item}>
                             <Image style={styles.movieImg} source={{ uri: item.image }} />
                             <Text style={styles.itemText}>{item.title}</Text>
                         </View>
                     </TouchableOpacity>
-
                 )}
-                keyExtractor={(item, index) => index.toString()}
-            />
+            </ScrollView>
+
             <View style={styles.line2} />
         </View>
     );
