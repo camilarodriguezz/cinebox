@@ -1,21 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, ScrollView, Image, Button, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, FlatList, RefreshControl, ScrollView, Image, Button, AsyncStorage } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import variables from './variables';
 import { CineboxContext } from './CineboxProvider';
 
+function wait(timeout) {
+    return new Promise(resolve => {
+        setTimeout(resolve, timeout);
+    });
+}
+
 export default function MovieList(props) {
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+
+        wait(2000).then(() => setRefreshing(false));
+    }, [refreshing]);
+
 
     const [movies, setMovies] = useState([])
-    const [refresh, setRefresh] = useState(false)
     const [token, setToken] = useState(null)
 
     CineboxContext._currentValue.setToken(token)
     CineboxContext._currentValue.refresh = !CineboxContext._currentValue.refresh
 
     const getMovies = (token) => {
-        console.log("got here getMovies")
         fetch(`${variables.ip_address}/api/movies/`, {
             method: 'GET',
             headers: {
@@ -42,19 +54,19 @@ export default function MovieList(props) {
 
     useEffect(() => {
         getData();
-    }, [refresh]);
+    }, [refreshing]);
 
     const movieClicked = (movie) => {
         props.navigation.navigate('Detail', { movie: movie, title: movie.title, })
-        setRefresh(!refresh)
+        // setRefresh(!refresh)
     }
 
     return (
         <View style={styles.container} >
-            <Image style={styles.image} source={require('../assets/MR_logo.png')} />
+            <Image style={styles.image} source={require('../assets/cinebox.png')} />
 
-            <ScrollView style={styles.item}>
-                {movies.map((item, index) => 
+            <ScrollView style={styles.item} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+                {movies.reverse().map((item, index) =>
                     <TouchableOpacity key={index} onPress={() => movieClicked(item)}>
                         <View key={index} style={styles.item}>
                             <Image style={styles.movieImg} source={{ uri: item.image }} />
