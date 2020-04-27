@@ -5,14 +5,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import variables from './variables';
 import { CineboxContext } from './CineboxProvider';
 
-
 export default function MovieList(props) {
-
+    const [refreshing, setRefreshing] = React.useState(false);
+    // test
     console.log('MovieList context Token', CineboxContext._currentValue.token);
 
     const [movies, setMovies] = useState([])
     // const [refresh, setRefresh] = useState(CineboxContext._currentValue.refresh)
-
     const [refresh, setRefresh] = useState(false)
     const [token, setToken] = useState(null)
 
@@ -34,7 +33,7 @@ export default function MovieList(props) {
             .catch(err => console.log(err))
     }
     console.log('movies', movies);
-    
+
 
     const getData = () => {
         AsyncStorage.getItem('Boxd_Token')
@@ -54,18 +53,18 @@ export default function MovieList(props) {
         setRefresh(!refresh)
     }
 
-    let Image_Http_URL ={ uri: 'https://reactnativecode.com/wp-content/uploads/2017/05/react_thumb_install.png'};
+    let Image_Http_URL = { uri: 'https://reactnativecode.com/wp-content/uploads/2017/05/react_thumb_install.png' };
 
     return (
         <View style={styles.container} >
             <Image style={styles.image} source={require('../assets/MR_logo.png')} />
-            <FlatList
+            <FlatList style={styles.item}
                 data={movies}
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => movieClicked(item)}>
                         <View style={styles.item}>
+                            <Image style={styles.movieImg} source={{ uri: item.image }} />
                             <Text style={styles.itemText}>{item.title}</Text>
-                            <Image style={{width:50, height:90}} source={ {uri: item.image} }/>
                         </View>
                     </TouchableOpacity>
 
@@ -93,41 +92,39 @@ MovieList.navigationOptions = screenProps => ({
         <Button title='Search' color='white' onPress={() => screenProps.navigation.navigate('Search')} />,
 })
 
-// AsyncStorage.getItem('Boxd_Token')
-//             .then(response => props.navigation.navigate('MovieList'))
-//             .catch(error => {
-//                 console.log(error);
-
-//             });
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#282C35',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingHorizontal: 20,
+    },
+    image: {
+        width: 220,
+        height: 100,
     },
     item: {
+        flex: 1,
+        width: '100%',
+    },
+    itemText: {
         color: '#fff',
         fontSize: 18,
         fontWeight: '700',
         padding: 20,
         backgroundColor: '#445565',
-        margin: 10,
+        marginBottom: 20,
     },
-    itemText: {
-        color: 'white',
-        fontSize: 24,
-    },
-    image: {
+    movieImg: {
         width: '100%',
-        height: 125,
-        marginTop: 10,
-    },
-    line: {
-        borderBottomColor: '#282C35',
-        borderBottomWidth: 4,
+        height: 300,
+        resizeMode: 'cover',
+        borderTopRightRadius: 20,
+        borderTopLeftRadius: 20,
     },
     line2: {
-        borderBottomColor: '#FF9900',
-        borderBottomWidth: 75,
+        borderBottomWidth: 50,
     },
 });

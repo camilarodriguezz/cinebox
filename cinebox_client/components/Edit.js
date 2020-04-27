@@ -8,6 +8,7 @@ export default function Edit(props) {
     const movie = props.navigation.getParam('movie', null)
     const [title, setTitle] = useState(movie.title)
     const [description, setDescription] = useState(movie.description)
+    const [image, setImage] = useState(movie.image)
     const token = CineboxContext._currentValue.token
 
     // const getToken = () => {
@@ -28,7 +29,7 @@ export default function Edit(props) {
                 'Authorization': `Token ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ title: title, description: description })
+            body: JSON.stringify({ title: title, description: description, image: image })
         })
             .then(res => res.json())
             .then(movie => {
@@ -66,7 +67,7 @@ export default function Edit(props) {
             fontSize: 24,
         },
         headerRight: () =>
-            <Button title='Remove' color='white' onPress={() => removeClicked()} />
+            <Button color="#fff" title='Remove' color='white' onPress={() => removeClicked()} />
     })
 
     return (
@@ -81,8 +82,13 @@ export default function Edit(props) {
                 style={styles.input} placeholder="Description"
                 onChangeText={text => setDescription(text)} value={description}
             />
+            <Text style={styles.label}>Image</Text>
+            <TextInput
+                style={styles.input} placeholder="Description"
+                onChangeText={text => setImage(text)} value={image}
+            />
             <View style={styles.btn}>
-                <Button onPress={() => saveMovie()} title={movie.id ? "Edit" : "Add"} />
+                <Button color="#fff" onPress={() => saveMovie()} title={movie.id ? "Edit" : "Add"} />
             </View>
         </View>
     );

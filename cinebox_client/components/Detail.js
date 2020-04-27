@@ -71,7 +71,7 @@ export default function Detail(props) {
                 <FontAwesomeIcon style={highlight > 4 ? styles.orange : styles.gray} icon={faStar} size={56} onPress={() => setHighlight(5)} />
             </View>
             <View style={styles.btn}>
-            <Button title="Rate Movie!" onPress={() => rateClicked()} />
+            <Button color="#fff" title="Rate Movie!" onPress={() => rateClicked()} />
             </View>
         </View>
     );

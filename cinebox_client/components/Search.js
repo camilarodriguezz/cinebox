@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     line2: {
-        borderBottomWidth: 75,
+        borderBottomWidth: 50,
     },
 
     // popup *****************

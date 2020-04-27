@@ -6,6 +6,7 @@ import {CineboxContext} from './CineboxProvider';
 export default function AddNew() {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
+    const [image, setImage] = useState('')
     const token = CineboxContext._currentValue.token
 
     const addMovie = () => {
@@ -15,7 +16,7 @@ export default function AddNew() {
                     'Authorization': `Token ${token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ title: title, description: description })
+                body: JSON.stringify({ title: title, description: description, image: image })
             })
                 .then(res => res.json())
                 .then(res => {
@@ -31,8 +32,10 @@ export default function AddNew() {
             <TextInput style={styles.input} placeholder="Title" onChangeText={text => setTitle(text) }/>
             <Text style={styles.label}>Description</Text>
             <TextInput style={styles.input} placeholder="Description" onChangeText={text => setDescription(text)} />
+            <Text style={styles.label}>Image</Text>
+            <TextInput style={styles.input} placeholder="Image URL" onChangeText={text => setImage(text)} />
             <View style={styles.btn}>
-            <Button onPress={() => addMovie()} title={"Add Movie!"} />
+            <Button color="#fff" onPress={() => addMovie()} title={"Add Movie!"} />
             </View>
         </View>
     )
