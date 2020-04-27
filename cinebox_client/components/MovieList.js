@@ -33,6 +33,8 @@ export default function MovieList(props) {
             })
             .catch(err => console.log(err))
     }
+    console.log('movies', movies);
+    
 
     const getData = () => {
         AsyncStorage.getItem('Boxd_Token')
@@ -52,6 +54,8 @@ export default function MovieList(props) {
         setRefresh(!refresh)
     }
 
+    let Image_Http_URL ={ uri: 'https://reactnativecode.com/wp-content/uploads/2017/05/react_thumb_install.png'};
+
     return (
         <View style={styles.container} >
             <Image style={styles.image} source={require('../assets/MR_logo.png')} />
@@ -61,6 +65,7 @@ export default function MovieList(props) {
                     <TouchableOpacity onPress={() => movieClicked(item)}>
                         <View style={styles.item}>
                             <Text style={styles.itemText}>{item.title}</Text>
+                            <Image style={{width:50, height:90}} source={ {uri: item.image} }/>
                         </View>
                     </TouchableOpacity>
 
