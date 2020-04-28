@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Alert, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, AsyncStorage, Image } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import variables from './variables'
@@ -52,6 +52,7 @@ export default function Detail(props) {
     return (
         <View style={styles.container}>
         <Text style={styles.title}>{movie.title}</Text>
+        <Image style={styles.image} source={{ uri: movie.image }} />
             <View style={styles.starContainer}>
                 <FontAwesomeIcon style={movie.avg_rating > 0 ? styles.orange : styles.white} icon={faStar} size={28} />
                 <FontAwesomeIcon style={movie.avg_rating > 1 ? styles.orange : styles.white} icon={faStar} size={30} />
@@ -62,7 +63,7 @@ export default function Detail(props) {
             </View>
             <Text style={styles.description}>{movie.description}</Text>
             <View style={styles.stars} />
-            <Text style={styles.description}>Rate the Movie!!!</Text>
+            <Text style={styles.itemText}>Rate the Movie!!!</Text>
             <View style={styles.starContainer}>
                 <FontAwesomeIcon style={highlight > 0 ? styles.orange : styles.gray} icon={faStar} size={48} onPress={() => setHighlight(1)} />
                 <FontAwesomeIcon style={highlight > 1 ? styles.orange : styles.gray} icon={faStar} size={50} onPress={() => setHighlight(2)} />
@@ -96,38 +97,36 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#282C35',
-        padding: 10,
+        paddingHorizontal: 20,
         justifyContent: 'center',
         alignItems: 'center',
     },
     item: {
         flex: 1,
-        padding: 10,
         height: 50,
         backgroundColor: 'gray',
     },
     itemText: {
         color: 'white',
-        fontSize: 24,
-        margin: 10
+        fontSize: 18,
+        fontWeight:'700'
     },
     image: {
-        width: '100%',
-        height: 125,
-        paddingTop: 30,
-        // resizeMode: 'contain',
+        width: 300,
+        height: 300,
+        resizeMode: 'contain',
     },
     title : {
         color: '#fff',
         fontSize: 40,
         fontWeight: '700',
-        padding: 20,
+        padding: 10,
     },
     starContainer: {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-        margin: 10,
+        margin: 5,
     },
     orange: {
         color: 'orange'
@@ -143,9 +142,9 @@ const styles = StyleSheet.create({
         color: '#445565'
     },
     description: {
-        fontSize: 25,
+        fontSize: 18,
         color: 'white',
-        padding: 10,
+        paddingVertical: 10,
     },
     stars: {
         borderBottomColor: 'white',

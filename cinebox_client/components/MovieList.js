@@ -28,10 +28,12 @@ export default function MovieList(props) {
     CineboxContext._currentValue.refresh = !CineboxContext._currentValue.refresh
 
     const getMovies = (token) => {
+        console.log("the token get movies! ", token);
+        
         fetch(`${variables.ip_address}/api/movies/`, {
             method: 'GET',
             headers: {
-                'Authorization': `Token ${token}`
+                'Authorization': `Token ${token}`,
             }
         })
             .then(res => res.json())
@@ -104,7 +106,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#282C35',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingHorizontal: 20,
+        paddingHorizontal: 30,
     },
     image: {
         width: 220,
